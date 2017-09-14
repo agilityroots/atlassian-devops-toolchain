@@ -12,6 +12,7 @@ Vagrant.configure("2") do |config|
       d.name = "bamboo-server"
       d.volumes = ["bamboo-server:/var/atlassian/bamboo"]
       d.ports = ["8085:8085","54663:54663"]
+      d.create_args = ["--net","atlassiannetwork","--ip","172.18.0.20"]
     end
   end
 
@@ -21,8 +22,9 @@ Vagrant.configure("2") do |config|
       d.name = "jira-server"
       d.ports = ["9090:8080"]
       # jira seems to require at least 2 GB memory
-      d.create_args = ["--memory=2048m"]
+      # d.create_args = ["--memory=2048m"]
       d.volumes = ["jira-server:/var/atlassian/jira"]
+      d.create_args = ["--net","atlassiannetwork","--ip","172.18.0.21"]
     end
   end
 
@@ -35,7 +37,7 @@ Vagrant.configure("2") do |config|
       d.name = "bitbucket-server"
       d.ports = ["7990:7990","7999:7999"]
       # docs recommend 2GB for bitbucket
-      d.create_args = ["--memory=2048m"]
+      d.create_args = ["--net","atlassiannetwork","--ip","172.18.0.22"]
       d.volumes = ["bitbucket-server:/var/atlassian/application-data/bitbucket"]
     end
   end
@@ -44,6 +46,7 @@ Vagrant.configure("2") do |config|
       d.build_dir = "./dockerfiles/tomcat/"
       d.name = "tomcat-petclinic-dev"
       d.ports = ["8090:8080"]
+      d.create_args = ["--net","atlassiannetwork","--ip","172.18.0.23"]
     end
   end
 
@@ -52,6 +55,7 @@ Vagrant.configure("2") do |config|
       d.build_dir = "./dockerfiles/tomcat/"
       d.name = "tomcat-petclinic-qa"
       d.ports = ["8100:8080"]
+      d.create_args = ["--net","atlassiannetwork","--ip","172.18.0.24"]
     end
   end
 

@@ -21,12 +21,27 @@ This repository contains a Vagrant + Docker recipe that starts the following Lab
 ## How to run
 
 * Clone this repository.
-* Open a terminal and CD to this directory.
-* Execute `vagrant up`.
-* This will download and run pre-configured Docker containers as above.
+* Open a **Powershell** terminal as administrator and CD to this directory.
+Execute the following commands
+```
+.\createNetwork.ps1
+.\createVolume.ps1
+vagrant up
+```
+
+This will
+1. create a custom bridge docker network under which all containers are created.
+1. create named Docker volumes for persistence
+1. download and run pre-configured Docker containers as above.
+
 * :exclamation: The Bitbucket and Bamboo applications take a bit of time to start up. Monitor the Docker logs with `docker logs -f <container name>`.
 
 ## Notes
+
+### Docker Network
+
+The Docker bridge network is created under subnet `172.18.0.0/24`. On Windows you might need to execute ` route add 172.18.0.0 mask 255.255.0.0 10.0.75.2` to create a route from your Hyper-V VM to the subnet.
+
 ### This is a Fresh Installation
 
 * This creates a fresh Bitbucket server that needs a license. To generate a 90-day evaluation, visit: https://my.atlassian.com/license/evaluation
@@ -34,7 +49,8 @@ This repository contains a Vagrant + Docker recipe that starts the following Lab
 
 ### Memory Considerations
 
-Most Atlassian applications seem to require a high amount of RAM. My experience with Docker for Windows has been that *at least 3 - 4 GB of RAM* needs to be allocated to the *overall Docker process*, otherwise you may encounter some strange symptoms:
+:exclamation: Most Atlassian applications seem to require a high amount of RAM.
+On Docker for Windows *at least 6 GB of RAM* needs to be allocated to the *overall Docker process*, otherwise you may encounter some strange symptoms:
 
 * JIRA Plugins do not load within a timeout
 * Bamboo fails to load
